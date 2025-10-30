@@ -98,12 +98,7 @@ impl Bank {
     }
 
     const fn burn_percent(&self) -> u64 {
-        // NOTE: burn percent is statically 50%, in case it needs to change in the future,
-        // burn_percent can be bank property that being passed down from bank to bank, without
-        // needing fee-rate-governor
-        static_assertions::const_assert!(solana_fee_calculator::DEFAULT_BURN_PERCENT <= 100);
-
-        solana_fee_calculator::DEFAULT_BURN_PERCENT as u64
+        0 as u64
     }
 
     /// Attempts to deposit the given `deposit` amount into the fee collector account.
