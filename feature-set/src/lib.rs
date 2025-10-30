@@ -752,7 +752,7 @@ pub mod apply_cost_tracker_during_replay {
 }
 
 pub mod stricter_abi_and_runtime_constraints {
-    solana_pubkey::declare_id!("CxeBn9PVeeXbmjbNwLv6U4C6svNxnC4JX6mfkvgeMocM");
+    solana_pubkey::declare_id!("BfisaSrqUBKrEcqxt2W6auK5zq5Jt8oYYjJMVaZNxHc4");
 }
 
 pub mod add_set_tx_loaded_accounts_data_size_instruction {
