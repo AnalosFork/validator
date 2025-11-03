@@ -1303,7 +1303,7 @@ impl Bank {
             fee_rate_governor,
             capitalization: AtomicU64::new(parent.capitalization()),
             vote_only_bank,
-            inflation: parent.inflation.clone(),
+            inflation: Arc::<RwLock<Inflation>>::new_disabled(),
             transaction_count: AtomicU64::new(parent.transaction_count()),
             non_vote_transaction_count_since_restart: AtomicU64::new(
                 parent.non_vote_transaction_count_since_restart(),
@@ -2628,7 +2628,8 @@ impl Bank {
 
         self.epoch_schedule = genesis_config.epoch_schedule.clone();
 
-        self.inflation = Arc::new(RwLock::new(genesis_config.inflation));
+        self.inflation = Arc::new(RwLock::new(Inflation::new_disabled()));
+        self.fee_rate_governor.burn_percent = 0;
 
         self.rent_collector = RentCollector::new(
             self.epoch,
@@ -2636,15 +2637,8 @@ impl Bank {
             self.slots_per_year,
             genesis_config.rent.clone(),
         );
+        self.rent_collector.rent.burn_percent = 0;
 
-        if self
-            .feature_set
-            .is_active(&feature_set::disable_inflation::id())
-        {
-            self.inflation = Arc::new(RwLock::new(Inflation::new_disabled()));
-            self.fee_rate_governor.burn_percent = 0;
-            self.rent_collector.rent.burn_percent = 0;
-        }
 
         // Add additional builtin programs specified in the genesis config
         for (name, program_id) in &genesis_config.native_instruction_processors {
