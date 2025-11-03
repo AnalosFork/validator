@@ -1303,7 +1303,7 @@ impl Bank {
             fee_rate_governor,
             capitalization: AtomicU64::new(parent.capitalization()),
             vote_only_bank,
-            inflation: Arc::<RwLock<Inflation>>::new_disabled(),
+            inflation: Arc::new(RwLock::new(Inflation::new_disabled())),
             transaction_count: AtomicU64::new(parent.transaction_count()),
             non_vote_transaction_count_since_restart: AtomicU64::new(
                 parent.non_vote_transaction_count_since_restart(),
